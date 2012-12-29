@@ -1,0 +1,42 @@
+    #include <stdio.h>
+    #include <stdlib.h> /* for atoi() */
+
+    int main(int argc,char *argv[]) {
+       // int m,n;
+      //  if (argc != 4) {
+      //      printf("Usage: %s m n filename\n",argv[0]);
+      //      return 1;
+      //  }
+       // m = atoi(argv[1]); /* convert strings to integers */
+       // n = atoi(argv[2]);
+       // printf("%s received m=%i n=%i filename=%s\n",argv[0],m,n,argv[3]);
+int index=0;
+       printf("Program name: %s\n", argv[index++});
+printf("Program argc number: %d\n", argc);
+	 /*
+while ((argc > 1) && (argv[1][0] == '-'))
+	{
+		switch (argv[1][1])
+		{
+			case 'f':
+				printf("%s\n",&argv[1][2]);
+				break;
+
+			case 'd':
+				printf("%s\n",&argv[1][2]);
+				printf("%s\n",&argv[1][2]);
+				break;
+
+			default:
+				printf("Wrong Argument: %s\n", argv[1]);
+				usage();
+		}
+
+		++argv;
+		--argc;
+	}
+*/
+	return (0);
+    }
+
+
