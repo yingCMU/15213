@@ -1,65 +1,42 @@
-    #include <stdio.h>
-    #include <stdlib.h> /* for atoi() */
-
-    int main(int argc,char *argv[]) {
-       // int m,n;
-      //  if (argc != 4) {
-      //      printf("Usage: %s m n filename\n",argv[0]);
-      //      return 1;
-      //  }
-       // m = atoi(argv[1]); /* convert strings to integers */
-       // n = atoi(argv[2]);
-       // printf("%s received m=%i n=%i filename=%s\n",argv[0],m,n,argv[3]);
-	int index=0;
-	int set,line,block=0;
-	char * file;
-	char * extrArg1;
-	char * extrArg2;
-		printf("Program name: %s\n", argv[index++]);
-		printf("Program argc number: %d\n", argc);
-// test number of args
-	if (argc >11) {
-	printf("\n invalid usage: more than 11 args\n");
-		return 0;
+unsigned long set_id, tag_id;
+	set_id = (set_mask & mem_addr) >> b;
+	tag_id = tag_mask & mem_addr;
+	
+	Set *set = sets + set_id;
+	//should be a pointer
+	Line *line;
+	printf("! here %ls",set->lines);
+	int i = 0, lur_line = 0, lur_last = set->lines->last;
+	
+	while(i < E){
+		line = set->lines + i;
+		if(line->valid == 0){
+			//init & miss
+			missC++;
+			line->tag = tag_id;
+			line->valid = 1;
+			set->count++;
+			line->last = set->count;
+			return;
+		}else if(line->tag == tag_id){
+			//hit
+			hitC++;
+			set->count++;
+			line->last = set->count;
+			return;
+		}else if(line->last < lur_last){
+			//unhit
+			lur_last = line->last;
+			lur_line = i;
+		
 		}
-	if (argc!=9)	{
-	printf("\nargc!=9\n");
-	index=index+argc-9;
+		i++;
 	}
-	printf("\n index=%d\n",index);
-	set=atoi(argv[++index]);
-	++index;
-	line=atoi(argv[++index]);
-	++index;
-	block=atoi(argv[++index]);
-	++index;
-	file=argv[++index];
-
-printf("%s received set=%i line=%i block=%i filename=%s\n",argv[0],set,line,block,file);
-	 /*
-while ((argc > 1) && (argv[1][0] == '-'))
-	{
-		switch (argv[1][1])
-		{
-			case 'f':
-				printf("%s\n",&argv[1][2]);
-				break;
-
-			case 'd':
-				printf("%s\n",&argv[1][2]);
-				printf("%s\n",&argv[1][2]);
-				break;
-
-			default:
-				printf("Wrong Argument: %s\n", argv[1]);
-				usage();
-		}
-
-		++argv;
-		--argc;
-	}
-*/
-	return (0);
-    }
-
-
+	
+	//evict here
+	evictC++;
+        missC++;
+        line = set->lines + lur_line;
+	line->tag = tag_id;
+	set->count++;
+	line->last = set->count;
